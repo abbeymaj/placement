@@ -1,0 +1,14 @@
+numpy
+pandas
+scikit-learn
+tensorflow
+Flask
+Flask-SQLAlchemy
+flask_cors
+pytest
+pyarrow
+fastparquet
+mlflow
+dagshub
+feature-engine
+#-e .
