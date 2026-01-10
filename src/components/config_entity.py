@@ -12,3 +12,11 @@ class DataIngestionConfig():
     test_data_path = os.path.join('artifacts', 'test.parquet')
     raw_data_path = 'https://github.com/abbeymaj80/my-ml-datasets/raw/refs/heads/master/project_datasets/placement/data.parquet'
 
+
+# Creating  a class to store the path to the preprocessor object
+@dataclass
+class DataTransformationConfig():
+    '''
+    This class stores the path to the preprocessor object in the artifacts folder.
+    '''
+    preprocessor_obj_path = os.path.join('artifacts', 'preprocessor.joblib')
