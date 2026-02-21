@@ -92,7 +92,7 @@ class TransformData():
             raise CustomException(e, sys)
     
     # Create a method to initiate the data transformation
-    def initiate_data_transformation(self, save_object=True):
+    def initiate_data_transformation(self, train_path:str, test_path:str, save_object=True):
         '''
         This method initiates the data transformation process. The method accepts the
         train data path and the test data path, transforms the data and returns the 
@@ -115,8 +115,8 @@ class TransformData():
         '''
         try:
             # Reading the train and test sets from the artifacts folder
-            train_data = pd.read_parquet(self.data_ingestion_config.train_data_path)
-            test_data = pd.read_parquet(self.data_ingestion_config.test_data_path)
+            train_data = pd.read_parquet(train_path)
+            test_data = pd.read_parquet(test_path)
             
             # Separating the train data into a feature set and target set
             train_features = train_data.copy().drop(labels=['Placement'], axis=1)

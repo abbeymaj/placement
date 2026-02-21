@@ -5,9 +5,11 @@ Flask
 Flask-SQLAlchemy
 flask_cors
 pytest
+pytest-mock
+pyfakefs
 pyarrow
 fastparquet
 mlflow
 dagshub
 feature-engine
-#-e .
+-e .

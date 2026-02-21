@@ -20,3 +20,12 @@ class DataTransformationConfig():
     This class stores the path to the preprocessor object in the artifacts folder.
     '''
     preprocessor_obj_path = os.path.join('artifacts', 'preprocessor.joblib')
+
+# Creating a class to store the path to the feature store
+@dataclass
+class FeatureStoreConfig():
+    '''
+    This class stores the path to the feature store.
+    '''
+    xform_train_path = os.path.join('feature_store', 'xform_train.parquet')
+    xform_test_path = os.path.join('feature_store', 'xform_test.parquet')

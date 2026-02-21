@@ -13,6 +13,12 @@ def train_dataset():
     ingestion_config = DataIngestionConfig()
     return ingestion_config.train_data_path
 
+# Creating a module to provide the path to the test dataset
+@pytest.fixture(scope='module')
+def test_dataset():
+    ingestion_config = DataIngestionConfig()
+    return ingestion_config.test_data_path
+
 # Verifying that the create features method works as expected
 def test_create_features(train_dataset):
     df = pd.read_parquet(train_dataset)
@@ -62,9 +68,9 @@ def test_convert_capital_case_to_lower_case(train_dataset):
     assert df_mod.columns.str.islower().all()
 
 # Verifying that the data transformation method works as expected
-def test_data_transformation():
+def test_data_transformation(train_dataset, test_dataset):
     transform = TransformData()
-    train_data, test_data, preprocessor_obj = transform.initiate_data_transformation(save_object=False)
+    train_data, test_data, preprocessor_obj = transform.initiate_data_transformation(train_dataset, test_dataset, save_object=False)
     assert train_data is not None
     assert test_data is not None
     assert preprocessor_obj is not None
