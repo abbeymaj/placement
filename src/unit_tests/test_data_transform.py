@@ -74,6 +74,8 @@ def test_data_transformation(train_dataset, test_dataset):
     assert train_data is not None
     assert test_data is not None
     assert preprocessor_obj is not None
+    assert 'Placement' in train_data.columns
+    assert 'Placement' in test_data.columns
     
 
 
