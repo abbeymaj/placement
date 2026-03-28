@@ -25,10 +25,15 @@ class UploadModelToRegistry():
         self.model_uri_config = ModelURIConfig()
     
     # Creating a method to upload the trained model to the model registry
-    def upload_model_to_registry(self):
+    def upload_model_to_registry(self, run_config_dir:str):
         '''
         This method trains the model and then uploads the model into the model registry.
         ==============================================================================
+        ------------------------
+        Parameters:
+        ------------------------
+        run_config_dir : str - This is the path to the run_config folder.
+        
         ------------------------
         Returns:
         ------------------------
@@ -54,11 +59,11 @@ class UploadModelToRegistry():
             run_name = f"{base_name}_{time_now}"
             
             # Setting the experiment ID at the Global Level
-            experiment_id = mlflow.set_experiment(base_name)
+            mlflow.set_experiment(base_name)
             
             # Initiating the model training run
             run_params = {}
-            with mlflow.start_run(run_name=run_name, experiment_id=experiment_id) as run:
+            with mlflow.start_run(run_name=run_name) as run:
                 # Initiating the model trainer
                 trainer = TrainModel()
                 # Fetching the best model
@@ -86,7 +91,7 @@ class UploadModelToRegistry():
                 run_params['model_uri'] = model_uri
             
             # Saving the run params
-            save_run_params(run_params)
+            save_run_params(run_params, run_config_dir)
             
             return model_uri
                 

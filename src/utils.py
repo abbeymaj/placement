@@ -109,7 +109,8 @@ def create_run_config_dir():
     ---------------------
     Returns:
     ---------------------
-    Creates the run_config folder at the root level of the project.
+    dir_path : str - Returns the path to the run_config folder at the 
+    root level of the project.
     ========================================================================================
     '''
     try:
@@ -117,18 +118,20 @@ def create_run_config_dir():
         script_dir = os.path.dirname(os.path.abspath(__file__))
         
         # Moving up two levels to reach the root of the project
-        root_dir = os.path.abspath(os.path.join(script_dir, "../../"))
+        root_dir = os.path.abspath(os.path.join(script_dir, "../"))
         
         # Creating the path to the run_config folder
         dir_path = os.path.join(root_dir, 'run_config')
         os.makedirs(dir_path, exist_ok=True)
+        
+        return dir_path
     
     except Exception as e:
         raise CustomException(e, sys)
 
 
 # Creating a function to store the run parameters
-def save_run_params(run_params:dict):
+def save_run_params(run_params:dict, run_config_dir:str):
     '''
     This function saves the run parameters as a json file in the run_config folder. The
     function also checks if the run_config folder exists. If the folder does not exist, the
@@ -150,7 +153,7 @@ def save_run_params(run_params:dict):
         now = datetime.now().strftime('%Y%m%d_%H-%M-%S')
         
         # Creating the path to the json file
-        json_path = os.path.join('run_config', f'run_params_{now}.json')
+        json_path = os.path.join(run_config_dir, f'run_params_{now}.json')
         
         # Saving the run parameters as a json file
         with open(json_path, 'w') as f_obj:
