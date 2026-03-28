@@ -1,10 +1,14 @@
 # Importing packages
 import os
 import pytest
+import dagshub
+import mlflow
+from mlflow.tracking import MlflowClient
 from unittest.mock import patch, MagicMock
 import requests
 from src.components.config_entity import ModelURIConfig
 from src.utils import create_run_config_dir
+from src.utils import get_next_model_name
 
 # Verifying that the model URI can be accessed and returns either
 # a 200 or 401 status code
@@ -33,3 +37,21 @@ def test_create_run_config_dir_real_fs(tmp_path, mocker):
     expected_dir = tmp_path / "run_config"
     assert expected_dir.exists()
     assert expected_dir.is_dir()
+
+# Verifying that the get_next_model_name function returns the correct model name
+def test_get_next_model_name():
+    dagshub.init(repo_owner='abbeymaj', repo_name='placement', mlflow=True)
+    
+    # Setting the model tracking URI
+    model_uri_config = ModelURIConfig()
+    model_uri = model_uri_config.model_uri_path
+    mlflow.set_tracking_uri(model_uri)
+    
+    # Creating the mlflow client
+    client = MlflowClient()
+    
+    # Setting the model name
+    base_name = 'training_model'
+    model_name = get_next_model_name(client, base_name)
+    assert model_name.startswith(base_name)
+    assert model_name.endswith('_1')

@@ -113,6 +113,9 @@ class TrainModel():
             # Fitting the training data
             rf_clf.fit(X_train, y_train)
             
+            # Fetching the model parameters
+            model_params = rf_clf.get_params()
+            
             # Saving the model if the save_model flag is set to True
             if save_model:
                 joblib.dump(rf_clf, self.trained_model_config.trained_model_path)
@@ -124,7 +127,10 @@ class TrainModel():
                 metric = f1_score(y_test, y_pred)
                 return metric
             
-            return rf_clf
+            return (
+                rf_clf,
+                model_params
+            )
             
         except Exception as e:
             raise CustomException(e, sys)

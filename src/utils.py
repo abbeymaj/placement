@@ -159,3 +159,113 @@ def save_run_params(run_params:dict):
     except Exception as e:
         raise CustomException(e, sys)
     
+
+# Creating a function to load the run parameters json file
+def load_run_params(directory='run_config'):
+    '''
+    This function loads the run parameters as a json file, which is present
+    in the run_config folder. 
+    ========================================================================================
+    ---------------------
+    Parameters:
+    ---------------------
+    directory : str - This is the name of the directory in which the run parameters json
+    file is stored.
+    
+    ---------------------
+    Returns:
+    ---------------------
+    run_parameters : json - This is the run parameters json file.
+    ========================================================================================
+    '''
+    try:
+        # Creating the path to the run_config folder
+        dir_path = Path.cwd() / directory
+        
+        # Listing all the files present in the director
+        json_files = os.listdir(dir_path)
+        
+        # Selecting the latest file
+        latest_file = None
+        latest_date = None
+        for file_name in json_files:
+            date_str = file_name.split('_')[2].split('.')[0]
+            file_date = datetime.strptime(date_str, '%Y%d%m')
+            if not latest_date or file_date > latest_date:
+                latest_date = file_date
+                latest_file = dir_path / file_name
+        
+        return latest_file
+    
+    except Exception as e:
+        raise CustomException(e, sys)
+
+# Creating a function to read the json file
+def read_json_file(file_path:str):
+    '''
+    This function reads a JSON file and returns the contents of the file.
+    ========================================================================================
+    ---------------------
+    Parameters:
+    ---------------------
+    file_path : str - This is the path to the run parameters json file.
+    
+    ---------------------
+    Returns:
+    ---------------------
+    data : json - This is the contents of the JSON file.
+    =========================================================================================
+    '''
+    try:
+        # Reading the json file
+        with open(file_path, 'r') as f_obj:
+            data = json.load(f_obj)
+        return data
+    
+    except Exception as e:
+        raise CustomException(e, sys)
+
+
+# Creating a function to define the model name dynamically
+def get_next_model_name(client, base_name):
+    '''
+    This function uses the client to fetch the latest model name, extracts the last version 
+    number and then generates the next model name.
+    ========================================================================================
+    ---------------------
+    Parameters:
+    ---------------------
+    client : mlflow.tracking.MlflowClient - This is the client object to interact with the 
+    model registry.
+    base_name : str - This is the base name of the model.
+    
+    ---------------------
+    Returns:
+    ---------------------
+    next_model_name : str - This is the next model name with the latest version number.
+    =========================================================================================
+    '''
+    try:
+        # Searching for registered models
+        registered_models = client.search_registered_models()
+        
+        # Creating a variable to store the maximum version number of a model
+        max_num = 0
+        
+        # Defining the prefix of the model name
+        prefix = f"{base_name}_"
+        
+        # Defining the model name
+        for model in registered_models:
+            if model.name.startswith(prefix):
+                try:
+                    num = int(model.name.split('_')[-1])
+                    if num > max_num:
+                        max_num = num
+                except ValueError:
+                    continue
+                
+        return f"{base_name}_{max_num + 1}"
+    
+    except Exception:
+        return f"{base_name}_1"
