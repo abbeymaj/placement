@@ -21,7 +21,7 @@ def test_model_uri_is_reachable():
 # root level of the project.
 def test_create_run_config_dir_real_fs(tmp_path, mocker):
     # Simulating the path where the train_pipeline.py file will be located
-    fake_script_path = tmp_path / "src" / "pipelines" / "train_pipeline.py"
+    fake_script_path = tmp_path / "pipelines" / "train_pipeline.py"
     
     # Creating the parent directories so that the script "exists" in a 
     # valid path
@@ -55,3 +55,4 @@ def test_get_next_model_name():
     model_name = get_next_model_name(client, base_name)
     assert model_name.startswith(base_name)
     assert model_name.endswith('_1')
+    

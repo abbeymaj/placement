@@ -76,7 +76,7 @@ class TrainModel():
             raise CustomException(e, sys)
     
     # Creating a method to initiate model training 
-    def initiate_model_training(self, save_model=False, make_prediction=False):
+    def initiate_model_training(self, save_model=False, make_prediction=True):
         '''
         This method trains the model and then saves the trained model to the artifacts
         folder.
@@ -125,7 +125,11 @@ class TrainModel():
             if make_prediction:
                 y_pred = rf_clf.predict(X_test)
                 metric = f1_score(y_test, y_pred)
-                return metric
+                return (
+                    rf_clf,
+                    model_params,
+                    metric
+                )
             
             return (
                 rf_clf,

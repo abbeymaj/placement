@@ -43,6 +43,6 @@ def test_target_feature_is_numerical(train_set_path):
 # Verifying that the model can be trained and a prediction can be made
 def test_model_training_and_prediction(train_set_path):
     model_train = TrainModel()
-    metric = model_train.initiate_model_training(make_prediction=True)
+    _, _, metric = model_train.initiate_model_training(make_prediction=True)
     assert metric is not None
     assert metric > 0.9

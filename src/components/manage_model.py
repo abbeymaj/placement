@@ -67,9 +67,11 @@ class UploadModelToRegistry():
                 # Initiating the model trainer
                 trainer = TrainModel()
                 # Fetching the best model
-                best_model, model_params = trainer.initiate_model_training()
+                best_model, model_params, metric = trainer.initiate_model_training(make_prediction=True)
                 # Logging the model parameters
                 mlflow.log_params(model_params)
+                # Logging the metric
+                mlflow.log_metric('f1_score', metric)
                 # Logging the best model
                 model_info = mlflow.sklearn.log_model(
                     sk_model=best_model,
@@ -83,6 +85,14 @@ class UploadModelToRegistry():
                 model = latest_version_info.name
                 version = latest_version_info.version
                 model_uri = model_info.model_uri
+                
+                # Adding a benchmark tag to the current version of the model
+                client.set_model_version_tag(
+                    name=base_name,
+                    version=version,
+                    key='f1_score_benchmark',
+                    value=metric
+                )
                 
                 # Storing the model metadata in the run_params dictionary
                 run_params['run_id'] = run_id
