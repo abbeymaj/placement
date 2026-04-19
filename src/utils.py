@@ -2,9 +2,11 @@
 import os
 import sys
 import json
+import joblib
 import pandas as pd
 from pathlib import Path
 from datetime import datetime
+from src.components.config_entity import DataTransformationConfig
 from src.exception import CustomException
 
 # Creating a function to convert the target feature from a categorical to
@@ -272,3 +274,28 @@ def get_next_model_name(client, base_name):
     
     except Exception:
         return f"{base_name}_1"
+
+# Creating a function to load the preprocessing object
+def load_preprocessor_object():
+    '''
+    This function loads the preprocessor object from the artifacts folder. The 
+    function returns the preprocessor object.
+    ========================================================================================
+    ---------------------
+    Returns
+    ---------------------
+    preprocessor : object - This is the preprocessor object loaded from the artifacts folder.
+    ========================================================================================
+    '''
+    try:
+        # Getting the path for the preprocessor object
+        preprocessor_config = DataTransformationConfig() 
+        preprocessor_obj_path = preprocessor_config.preprocessor_obj_path
+        
+        # Loading the preprocessor object
+        preprocessor_obj = joblib.load(preprocessor_obj_path)
+        
+        return preprocessor_obj
+    
+    except Exception as e:
+        raise CustomException(e, sys)

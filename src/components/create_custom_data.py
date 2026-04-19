@@ -54,7 +54,7 @@ class CreateCustomData():
             # Converting the user entered data into a Python dictionary
             data = {
                 'time': [current_date_time],
-                'ip': [self.iq],
+                'iq': [self.iq],
                 'cgpa': [self.cgpa],
                 'communication_skills': [self.communication_skills],
                 'projects_completed': [self.projects_completed]
