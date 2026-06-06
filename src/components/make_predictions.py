@@ -3,6 +3,7 @@ import sys
 import pandas as pd
 import dagshub
 import mlflow
+from src.utils import convert_target_to_categorical_feature
 from mlflow.tracking import MlflowClient
 from src.utils import load_preprocessor_object
 from src.components.config_entity import DataTransformationConfig
@@ -95,9 +96,13 @@ class MakePrediction():
             
             # Making predictions using the transformed features and the latest model
             results = model.predict(transformed_features)
-            preds = round(float(results[0]), 2)
+            preds1 = int(results[0])
             
-            return preds
+            # Converting the prediction to a string to display on the webpage
+            pred_df = pd.DataFrame([preds1], columns=['placement'])
+            preds = convert_target_to_categorical_feature(pred_df)
+
+            return preds['placement'].iloc[0]
         
         except Exception as e:
             raise CustomException(e, sys)

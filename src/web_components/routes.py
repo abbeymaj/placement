@@ -60,15 +60,16 @@ def predict_datapoint():
         # from the dataframe.
         df.drop(labels=['time'], axis=1, inplace=True)
         prediction = MakePrediction()
-        preds = prediction.make_prediction(df)
-        
+        preds1 = prediction.make_predictions(df)
+        preds_int = 1 if preds1 == "Yes" else 0
+
         # Storing the prediction data into the Predictions table
         pred_entry = Predictions(
             data_id = data_entry.id,
-            prediction = int(preds)
+            prediction = preds_int
         )
         db.session.add(pred_entry)
         db.session.commit()
-        
+
         # Returning the prediction to the web application
-        return render_template('predict.html', result=preds, pred_df=df)
+        return render_template('predict.html', result=preds1, pred_df=df)

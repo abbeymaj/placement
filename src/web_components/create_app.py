@@ -51,7 +51,7 @@ def create_app(root_dir=None):
         
         # Registering the database instance with the app
         db.init_app(app)
-        
+
         return app
     
     except Exception as e:
