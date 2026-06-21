@@ -12,4 +12,5 @@ fastparquet
 mlflow
 dagshub
 feature-engine
+evidently
 -e .

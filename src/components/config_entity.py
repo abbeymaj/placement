@@ -1,6 +1,7 @@
 # Importing packages
 import os
 from dataclasses import dataclass
+from datetime import datetime
 
 # Creating a class to store the path to the train and test datasets
 @dataclass
@@ -46,4 +47,21 @@ class ModelURIConfig():
     load the model from the model registry.
     '''
     model_uri_path = 'https://dagshub.com/abbeymaj/placement.mlflow'
+
+# Creating a class to store the database path
+@dataclass
+class DatabaseConfig():
+    '''
+    This class stores the path to the database.
+    '''
+    db_path:str = os.path.join('db', 'placement.db')
+
+#Creating the class to store the path to the drift report
+class DriftReportConfig():
+    '''
+    This class stores the path to the drift detection report.
+    '''
+    current_date = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+    report_name = current_date + '_data_drift_report.html'
+    report_path = os.path.join('reports', report_name)
     

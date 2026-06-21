@@ -4,9 +4,11 @@ import sys
 import json
 import joblib
 import pandas as pd
+import sqlite3
 from pathlib import Path
 from datetime import datetime
 from src.components.config_entity import DataTransformationConfig
+from src.components.config_entity import DatabaseConfig
 from src.exception import CustomException
 
 # Creating a function to convert the target feature from a categorical to
@@ -299,3 +301,46 @@ def load_preprocessor_object():
     
     except Exception as e:
         raise CustomException(e, sys)
+
+
+# Creating a function to read the SQLite database and return a dataframe
+def read_sql_data(table='data'):
+    '''
+    This function reads the data from the SQLite database and returns it as a pandas
+    dataframe.
+    ========================================================================================
+    ---------------------
+    Parameters:
+    ---------------------
+    table : str - This is the name of the table in the database. The default value is 'data'.
+    Allowed values are 'data' and 'predictions'.
+    
+    ---------------------
+    Returns:
+    ---------------------
+    df : Pandas dataframe - This is the Pandas dataframe containing the data from the 
+    SQLite database.
+    =========================================================================================
+    '''
+    try:
+        # Reading the database path
+        db_config = DatabaseConfig()
+        db_path = db_config.db_path
+        
+        # Creating a connection to the SQLite database
+        conn = sqlite3.connect(db_path)
+        
+        # Defining the query to read the data
+        query = f"SELECT * FROM {table}"
+        
+        # Reading the data from the database into a pandas dataframe
+        df = pd.read_sql_query(query, con=conn)
+        
+        # Closing the connection to the database
+        conn.close()
+        
+        return df
+    
+    except Exception as e:
+        raise CustomException(e, sys)
+    
