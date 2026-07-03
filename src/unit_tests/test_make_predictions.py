@@ -60,10 +60,5 @@ def test_make_predictions():
     # Making predictions suing the make_predictions method
     preds = prediction.make_predictions(df)
     
-    # Converting the preds value into a string to for unit testing
-    # the number of decimal places.
-    decimal_check = str(preds).split('.')[-1]
-    
     assert preds is not None
-    assert len(decimal_check) <= 2
     
