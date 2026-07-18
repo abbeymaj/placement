@@ -8,10 +8,6 @@ from src.web_components.create_app import create_app, db
 # Creating a pytest fixture to build the app context for testing
 @pytest.fixture
 def app(tmp_path):
-    # Temporarily overriding the root directory for testing
-    original_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-    os.environ["TEST_ROOT_DIR"] = str(tmp_path)
-    
     # Creating the app
     tmp_path_str = str(tmp_path).replace("\\", "/")
     app = create_app(root_dir=tmp_path_str)
