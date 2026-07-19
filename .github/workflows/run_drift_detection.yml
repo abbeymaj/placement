@@ -27,7 +27,7 @@ jobs:
               run: |
                 export PYTHONPATH="${PYTHONPATH}:$(pwd)"
                 echo "Updated PYTHONPATH: $PYTHONPATH"
-                python -m src.pipelines.run_drift_detection
+                python -m src.pipelines.drift_detection_pipeline
             
             - name: Commit and Push Changes
               run: |
