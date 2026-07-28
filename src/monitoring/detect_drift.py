@@ -108,6 +108,7 @@ class DetectDataDrift():
             
             # Saving the report to the reports folder
             if save_report:
+                os.makedirs(self.report_config.report_path, exist_ok=True)
                 my_eval.save_html(self.report_config.report_path)
             
         
